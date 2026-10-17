@@ -59,10 +59,10 @@ def product_weeks() -> pd.DataFrame:
     return grouped
 
 
-def eligible_products(weeks: pd.DataFrame) -> pd.DataFrame:
+def eligible_products(weeks: pd.DataFrame, min_weeks: int = MIN_WEEKS) -> pd.DataFrame:
     comparable = weeks[weeks["state"].isin(["on", "off"])]
     week_counts = comparable.groupby(["PRODUCT_ID", "state"]).size().unstack(fill_value=0)
-    keep = week_counts[(week_counts["on"] >= MIN_WEEKS) & (week_counts["off"] >= MIN_WEEKS)].index
+    keep = week_counts[(week_counts["on"] >= min_weeks) & (week_counts["off"] >= min_weeks)].index
     totals = (
         comparable[comparable["PRODUCT_ID"].isin(keep)]
         .groupby(["PRODUCT_ID", "SUB_COMMODITY_DESC", "BRAND", "state"], as_index=False)
@@ -120,7 +120,18 @@ def main() -> None:
     print(f"Discount as a share of pre-discount sales during discount weeks: {depth:.1%}")
     print(f"Gross margin required to cover the price cut: {breakeven_margin(products):.1%}")
     for margin in MARGINS:
-        print(f"  At {margin:.0%} margin, discount weeks change margin dollars by ${margin_change(products, margin):,.0f}")
+        print(f"  At a {margin:.0%} gross margin, discount weeks change margin dollars by ${margin_change(products, margin):,.0f}")
+    print("Minimum weeks on each side:")
+    for min_weeks in (1, 2, 4):
+        alternate = eligible_products(weeks, min_weeks=min_weeks)
+        alternate_extra = alternate["extra_units"].sum()
+        alternate_baseline = alternate["baseline_units"].sum()
+        print(
+            f"  {min_weeks}: {len(alternate)} cereals, "
+            f"{alternate_extra:,.0f} extra boxes, "
+            f"lift {alternate_extra / alternate_baseline:.1%}, "
+            f"tie {breakeven_margin(alternate):.1%}"
+        )
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     products.to_csv(OUT, index=False)

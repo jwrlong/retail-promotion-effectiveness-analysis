@@ -23,7 +23,7 @@
 
 | Question | Result |
 |---|---|
-| How many extra boxes did the discount sell, and what gross margin covers the price cut? | **7,291 extra boxes**, 72% above the full-price pace. The cut is covered at a **52%** gross margin. At 25%, 35%, and 45% the discount weeks earn less. |
+| How many extra boxes did the discount sell, and what gross margin covers the price cut? | **7,291 extra boxes**, 72% above the full-price pace. Anything under **52%** loses money during the discount weeks. The tie is **52.4%**: a gross margin below it loses money, and a margin above it does not. |
 | Which household types account for the increase? | Among surveyed households, **two adults with children** account for the most extra boxes. **One adult with children** and **single women** have the highest lift. |
 | Does the increase rise with the number of children? | **No.** Households with 3 or more children have the highest lift. Households with 2 children have the lowest of the three groups. |
 | Which cereal type responds? | **Kids cereal** accounts for the most extra boxes. **All-family cereal** has the highest lift. **Adult cereal** requires the highest margin. |
@@ -80,7 +80,19 @@ The average amount paid in discount weeks was **$2.29** per box. The average ful
 | 55% | +$587 |
 | 65% | +$2,868 |
 
-Margin dollars are lower at 25%, 35%, and 45%, and higher at 55% and 65%. The change is zero at a **52.4%** gross margin.
+Margin dollars are lower at gross margins of 25%, 35%, and 45%, and higher at 55% and 65%. The change is zero at a **52.4%** gross margin.
+
+### Stability of the two-week rule
+
+The result above keeps a cereal only when it has at least two full-price weeks and two discount weeks. The same comparison with a one-week minimum and a four-week minimum:
+
+| Minimum weeks on each side | Cereals | Extra boxes | Lift | Tie |
+|---:|---:|---:|---:|---:|
+| 1 | 254 | 7,941 | 75% | 51.1% |
+| 2 | 203 | 7,291 | 72% | 52.4% |
+| 4 | 177 | 7,022 | 72% | 52.8% |
+
+The extra boxes stay near 7,000. The tie stays between 51% and 53%.
 
 ---
 
@@ -175,7 +187,7 @@ The Type A comparison has little unmatched volume: 207 of 234 households with ch
 
 ## 10. Recommendation
 
-Repeat cold-cereal discounts at the observed depth only when gross margin on those products is above about **52%**. At 25%, 35%, and 45%, discount weeks produce fewer margin dollars than the full-price pace.
+Repeat cold-cereal discounts at the observed depth only when gross margin on those products is above the **52.4%** tie. Anything under **52%** loses money during the discount weeks.
 
 Where the margin required is lower than the category result:
 
@@ -195,6 +207,7 @@ None of the three campaign types shows a material increase in cereal units per d
 | 3,355 of 7,291 extra boxes come from households with no demographics | §5 describes surveyed buyers and leaves that volume in the "Not surveyed" row. |
 | One adult with children is 45 households | The 151% lift and 39% margin are estimated on the smallest surveyed group in §5. |
 | Discount-week units above the full-price pace are all treated as incremental | Purchases shifted forward from a later week remain inside the 7,291. Removing them would reduce extra boxes and raise the margin required. |
+| Discount weeks may already have been high-demand weeks | A price cut placed in a week that would have sold more boxes anyway is counted as extra. That would make the 7,291 extra boxes larger than the gain from the price cut, and it would raise the margin required. |
 | Campaign content is unknown | §9 measures cereal units around the mailing. It does not measure the campaign's performance against its own offer. |
 | One retailer, 2,500 frequent shoppers, day index 1–711 | Results apply to this panel. The file has no calendar dates and no store attributes. |
 
@@ -202,7 +215,7 @@ None of the three campaign types shows a material increase in cereal units per d
 
 ## 12. Reproduce
 
-From the project folder, with the parquet files in `data/parquet/`:
+Download the parquet files and install the packages as described in the repository README. Then, from the project folder:
 
 ```bash
 python3 analysis/cereal_extra_units.py   # §4
